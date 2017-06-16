@@ -7,13 +7,14 @@ const meow = require('meow');
 const main = require('./lib/main');
 const {STATE_ERROR} = require('./lib/states');
 
-meow({
+const {flags} = meow({
 	help: `
 		Usage: trevor [options]
 
 		Options:
 
 		  -h, --help  Show this help
+		  --registry  Set a docker registry mirror
 
 		Required files (in the current directory):
 
@@ -21,12 +22,13 @@ meow({
 		  - .travis.yml
 	`
 }, {
-	alias: {h: 'help'}
+	alias: {h: 'help'},
+	default: {registry: ''}
 });
 
 const cwd = process.cwd();
 
-main({cwd})
+main({cwd, flags})
 	.then(state => {
 		let hasErrors = false;
 
